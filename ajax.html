@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Car Selector</title>
+	<!--
+	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+	-->
+	<!-- Bootstrap File -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<style type="text/css">
+    button,
+    div,
+    form,
+    input {
+      margin: 10px;
+    }
+  </style>
+	
+</head>
+<body>
+
+	<!-- Rendered buttons will get dumped Here  -->
+	  <div id="buttons-view"></div>
+	  
+ 
+ 	 <form id="cars-form">
+  	<h3 id="searchTitle">Add a cars!</h3>
+    <label for="cars-input"></label>
+	<input type="text" id="cars-input"><br>
+	
+    <!-- Button triggers new car to be added -->
+    <input type="button" class="btn btn-danger" id="addcars" type="submit" value="Add cars">
+  </form>
+    <!-- cars will get dumped here -->
+  	<div id="cars-view"></div>
+
+	<script src='http://code.jquery.com/jquery-2.1.3.min.js'></script>
+	<script type="text/javascript">
+
+	var topics = ["nissan", "ford'", "honda", "chevrolet", "Lexus", "GMC", 
+ 	 "toyota"];
+        
+	  function displayMovieInfo() {
+
+		var car = $(this).attr("data-name");
+		var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + car + "&api_key=mhXzvcQuXQzQgn89mAkrrJ9tidBYfT8t";	
+		$.ajax({
+        url: queryURL,
+        method: "GET"
+        }).then(function(response) {
+			for(var i=0; i < results.length; i++) {
+
+			var rating = results[i].rating;
+
+			var p = $("<p>").text("Rating: " + rating);
+
+ 			 if (results[i].rating == "r" || results[i].rating == "pg-13")
+  			{
+
+ 		 	}
+  			else {
+  
+   			console.log(response)
+  
+   			var rating = results[i].rating;
+
+   			var p = $('<p>').text( "Rating: " + rating);
+
+   			var carImage = $('<img>');
+   			carImage.attr("src", results[i].images.fixed_height.url);
+
+   			$('#carView').append(p);
+   			$('#carView').append(carImage);
+
+
+   			$("#carView").prepend(gifDiv);
+
+   
+   			carImage.attr('src', results[i].images.fixed_height_still.url);
+   			carImage.attr('data-still', results[i].images.fixed_height_still.url);
+   			carImage.attr('data-animate', results[i].images.fixed_height.url);
+   			carImage.attr('data-state', 'still');
+   			carImage.addClass('carImage');
+
+  			}
+
+		}
+
+	$('.carImage').on('click', function(){
+
+		var state = $(this).attr('data-state'); 
+		console.log(state);
+
+
+		if ( state == 'still'){
+			$(this).attr('src', $(this).data('animate'));
+			$(this).attr('data-state', 'animate');
+		}else{
+			$(this).attr('src', $(this).data('still'));
+			$(this).attr('data-state', 'still');
+		}
+	});
+
+	});
+
+}
+
+	 // Function for displaying car data
+	 function renderButtons() {
+    
+        $("#buttons-view").empty();
+
+        // Loops through the array of cars
+        for (var i = 0; i < movies.length; i++) {
+
+          var a = $("<button>");
+
+			a.addClass("car");
+          // Added a data-attribute
+          a.attr("data-name", cars[i]);
+          // Provided the initial button text
+          a.text(cars[i]);
+          // Added the button to the buttons-view div
+          $("#buttons-view").append(a);
+        }
+      }
+
+      $("#add-car").on("click", function(event) {
+        event.preventDefault();
+
+		var car = $("#movie-input").val().trim();
+
+        cars.push(car);
+
+        // Calling renderButtons which handles the processing of car array
+        renderButtons();
+
+      });
+
+      $(document).on("click", ".car", displayCarInfo);
+
+      renderButtons();
+    </script>
+  </div>
+</body>
+
+</html>
